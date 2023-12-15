@@ -3,11 +3,9 @@ using namespace std;
 
 class DSU{
 public:
+    DSU() =default;
     explicit DSU(int n){
-        pa = vector<int>(n, 0);
-        iota(pa.begin(), pa.end(), 0);
-        sz = vector<int>(n, 1);
-        this->cnt = n;
+        init(n);
     }
     int find(int x){
         if(x != pa[x]) pa[x] = find(pa[x]);
@@ -34,6 +32,13 @@ public:
     }
     int count(){
         return this->cnt;
+    }
+
+    void init(int n) {
+        pa = vector<int>(n, 0);
+        iota(pa.begin(), pa.end(), 0);
+        sz = vector<int>(n, 1);
+        this->cnt = n;
     }
 private:
     vector<int> pa;

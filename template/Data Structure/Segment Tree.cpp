@@ -2,27 +2,28 @@
 using namespace std;
 
 //区间查询、单点修改
+template<typename T>
 class SegTree{
-    vector<int> a;
-    vector<int> tree;
+    vector<T> a;
+    vector<T> tree;
     int tag;//0-sum, 1-min, 2-max
 public:
-    explicit SegTree(int _tag, vector<int>& arr) : tag(_tag) {
+    explicit SegTree(int _tag, vector<T>& arr) : tag(_tag) {
         int n = arr.size();
         a = arr;
         tree.resize(n << 2);
         build(0, n - 1, 0);
     }
-    explicit SegTree(int _tag, int n, int val = 0) : tag(_tag) {
+    explicit SegTree(int _tag, int n, T val) : tag(_tag) {
         a.resize(n, val);
         tree.resize(n << 2);
         build(0, n - 1, 0);
     }
-    int Query(int l, int r) {
+    T Query(int l, int r) {
         //区间查询
         return query(l, r, 0, a.size() - 1, 0);
     }
-    void Change(int x, int v) {
+    void Change(int x, T v) {
         //单点修改
         change(x, v, 0, a.size() - 1, 0);
     }
@@ -48,11 +49,12 @@ private:
         }
         
     }
-    int query(int l, int r, int L ,int R, int p) {
+    T query(int l, int r, int L ,int R, int p) {
         if(l <= L && r >= R) {
             return tree[p];
         }
-        int m = ((R - L) >> 1) + L, res;
+        int m = ((R - L) >> 1) + L;
+        T res;
         // 取最值时注意res初值是否恰当
         switch (tag) {
             case 0:
@@ -73,7 +75,7 @@ private:
         }
         return res;
     }
-    void change(int x, int v, int L, int R, int p) {
+    void change(int x, T v, int L, int R, int p) {
         if(L == R && L == x) {
             tree[p] = v;
             return;
@@ -97,29 +99,30 @@ private:
 
 
 //区间查询、区间修改
+template<typename T>
 class SegTree{
-    vector<int> a;
-    vector<int> tree;
+    vector<T> a;
+    vector<T> tree;
     vector<int> tag;//对“子区间”的标记，不影响本身的值
 public:
-    explicit SegTree(vector<int>& arr) {
+    explicit SegTree(vector<T>& arr) {
         int n = arr.size();
         a = arr;
         tree.resize(n << 2);
         tag.resize(n << 2);
         build(0, n - 1, 0);
     }
-    explicit SegTree(int n, int val = 0) {
+    explicit SegTree(int n, T val) {
         a.resize(n, val);
         tree.resize(n << 2);
         tag.resize(n << 2);
         build(0, n - 1, 0);
     }
-    int Query(int l, int r) {
+    T Query(int l, int r) {
         //区间查询
         return query(l, r, 0, a.size() - 1, 0);
     }
-    void Update(int l, int r, int k) {
+    void Update(int l, int r, T k) {
         //区间修改
         update(l, r, 0, a.size() - 1, 0, k);
     }
@@ -163,7 +166,7 @@ private:
         build(m + 1, R, (p + 1) << 1);
         push_up(p);     
     }
-    void update(int l, int r, int L, int R, int p, int k) {
+    void update(int l, int r, int L, int R, int p, T k) {
         
         if(l <= L && r >= R) { //区间加
             tree[p] += k * (R - L + 1);
@@ -183,11 +186,12 @@ private:
         if(r > m) update(l, r, m + 1, R, rc(p), k);
         push_up(p);
     }
-    int query(int l, int r, int L ,int R, int p) {
+    T query(int l, int r, int L ,int R, int p) {
         if(l <= L && r >= R) {
             return tree[p];
         }
-        int m = ((R - L) >> 1) + L, res = 0;
+        int m = ((R - L) >> 1) + L;
+        T res = T();
         push_down(p, L, R);
         if(l <= m) res += query(l, r, L, m, (p << 1) + 1);
         if(r > m) res += query(l, r, m + 1, R, (p + 1) << 1);

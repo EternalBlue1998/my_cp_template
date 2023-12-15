@@ -201,21 +201,6 @@ public:
 
 
 
-//（带名次的）平衡树
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template<typename T>
-using ordered_multiset = __gnu_pbds::tree<T, null_type, std::less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
-// 对于ordere_multiset，lower_bound(x)与upper_bound(x)功能相反
-template<typename T>
-using ordered_set = __gnu_pbds::tree<T, null_type, std::less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-// order_of_key(x)：返回 x 以 Cmp_Fn 比较的排名
-// find_by_order(x)：返回 Cmp_Fn 比较的排名所对应元素的迭代器
-// lower_bound(x)：以 Cmp_Fn 比较做 lower_bound，返回迭代器
-// upper_bound(x)：以 Cmp_Fn 比较做 upper_bound，返回迭代器
-
-
 
 //
 template<typename T>
